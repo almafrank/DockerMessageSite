@@ -38,3 +38,7 @@ Eftersom applikationen har kört lokalt på en server utan containers så kan de
 - Om möjligt så persistera Redis datan så den finns kvar om Redis containern startar om.
 
 - Om möjligt gör så att det går att nå reverse proxy dashboard på `dashboard.localhost`.
+
+## Inlämning av uppgift
+
+Inlämning av färdig uppgift sker via Learnpoint där ni zippat ihop ert projekt och laddat upp det.
