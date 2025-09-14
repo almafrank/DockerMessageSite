@@ -8,7 +8,11 @@ Nuvarande version av applikationen (Flask baserad) startas manuellt på en serve
 
 Ni finner de två applikationerna i **frontend** respektive **backend** mapparna i detta repot.
 
+Det går att testa nuvarande version genom att starta vardera applikation i separata terminaler och samtidigt starta en Redis container med `docker run -d --name redis -p 6379:6379 redis:latest`.
+
 ## Krav på lösningen
+
+- Den ska vara container-baserad.
 
 - Det ska finnas en **reverse proxy**, som lyssnar på port 80 och routar inkommande trafik till rätt tjänst.
 
