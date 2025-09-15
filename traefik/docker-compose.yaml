@@ -1,0 +1,25 @@
+networks:
+  proxy:
+    name: proxy
+  backend:
+    name: backend
+
+#traefik proxy service
+services:
+  traefik:
+    container_name: traefik-proxy
+    image: traefik:v3.5 #traefik image version 3.5
+    command: 
+    - --api.dashboard=true
+    - --providers.docker.exposedbydefault=false #dashboard expose
+    - --api.insecure=true #Aktivera traefik Dashboard
+    - --providers.docker=true #Läsa labels från docker container
+    - --entrypoint.web.address=:80 #Entrypoint post http :80
+
+    ports:
+    - "80:80"
+    - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+    - proxy
