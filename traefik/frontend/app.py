@@ -94,7 +94,7 @@ def synthwave_page(content: str) -> str:
 def form():
     hostname = os.environ.get("HOSTNAME", "unknown")
     try:
-        res = requests.get("http://127.0.0.1:5001/messages", timeout=2)
+        res = requests.get("http://backend:5001/messages", timeout=2)
         messages = res.json()
         message_list = "<ul>" + "".join(f"<li>{m}</li>" for m in messages) + "</ul>"
     except Exception as e:
@@ -167,7 +167,7 @@ def form():
 def send():
     message = request.form.get("message", "")
     try:
-        res = requests.post("http://127.0.0.1:5001/submit", json={"message": message}, timeout=2)
+        res = requests.post("http://backend:5001/submit", json={"message": message}, timeout=2)
         if res.ok:
             return synthwave_page("<h1>✅ Sent successfully!</h1><p>Your message is glowing on the wall.</p><a href='/'>Back</a>")
         else:
@@ -178,7 +178,7 @@ def send():
 @app.route("/clear", methods=["POST"])
 def clear():
     try:
-        res = requests.post("http://127.0.0.1:5001/clear", timeout=2)
+        res = requests.post("http://backend:5001/clear", timeout=2)
         if res.ok:
             return synthwave_page("<h1>🧹 Messages cleared!</h1><p>The wall is clean and shiny again.</p><a href='/'>Back</a>")
         else:
