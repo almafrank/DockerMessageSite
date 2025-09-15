@@ -84,6 +84,8 @@ services:
       - traefik.http.services.backend.loadbalancer.server.port=5001
     volumes:
       - ./backend:/code
+    depends_on:
+    - redis
    
     networks:
       - proxy
