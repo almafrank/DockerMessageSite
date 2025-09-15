@@ -75,7 +75,7 @@ services:
   backend:
     build: ./backend 
     image: backend:latest 
-    container_name: backend-api
+    container_name: backend
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
