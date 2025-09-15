@@ -7,19 +7,66 @@ networks:
 #traefik proxy service
 services:
   traefik:
-    container_name: traefik-proxy
-    image: traefik:v3.5 #traefik image version 3.5
-    command: 
-    - --api.dashboard=true
-    - --providers.docker.exposedbydefault=false #dashboard expose
-    - --api.insecure=true #Aktivera traefik Dashboard
-    - --providers.docker=true #Läsa labels från docker container
-    - --entrypoint.web.address=:80 #Entrypoint post http :80
-
+    image: traefik:v3.5
+    command:
+      - --api.dashboard=true
+      - --providers.docker.exposedbydefault=false
+      - --api.insecure=true        # Aktivera Traefiks dashboard (ej för produktion)
+      - --providers.docker=true    # Läs labels från Docker
+      - --entrypoints.web.address=:80 # Entrypoint på port 80
     ports:
-    - "80:80"
-    - "8080:8080"
+      - "80:80"
+      - "8080:8080"                  # Dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-    - proxy
+      - proxy
+
+  frontend1:
+    build: ./ app
+    image: frontend:latest
+    container_name: frontend1
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.frontend.entrypoints=web
+      - traefik.http.routers.frontend.rule=Host(`frontend.localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=5000
+    volumes:
+      - ./frontend:/code
+    networks:
+     - proxy
+  
+  frontend2:
+    build: ./ app
+    image: frontend:latest
+    container_name: frontend2
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.frontend.entrypoints=web
+      - traefik.http.routers.frontend.rule=Host(`frontend.localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=5000
+    volumes:
+      - ./frontend:/code
+    networks:
+     - proxy
+
+  frontend3:
+    build: ./ app.py
+    image: frontend:latest
+    container_name: frontend3
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.frontend.entrypoints=web
+      - traefik.http.routers.frontend.rule=Host(`frontend.localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=5000
+    volumes:
+      - ./frontend:/code
+    networks:
+     - proxy
+    
+
+
+
