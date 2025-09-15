@@ -89,10 +89,6 @@ services:
       - proxy
       - backend
      
-  
-     
-  
-
   #Db redis container
   redis:
     image: redislabs/redismod #konto på redis
