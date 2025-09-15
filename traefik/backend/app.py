@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 import redis
 
 app = Flask(__name__)
-r = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
+r = redis.Redis(host='redis', port=6379, decode_responses=True)
 
 @app.route("/api", methods=["GET"])
 def api():
