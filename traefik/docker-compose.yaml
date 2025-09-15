@@ -1,0 +1,104 @@
+networks:
+    proxy:
+      name: proxy
+    backend:
+      name: backend
+
+
+services:
+  traefik:
+    image: traefik:v3.5
+    container_name: traefik
+    command:
+      - --api.dashboard=true
+      - --providers.docker.exposedbydefault=false
+      - --api.insecure=true        # Aktivera Traefiks dashboard (ej för produktion)
+      - --providers.docker=true    # Läs labels från Docker
+      - --entrypoints.web.address=:80 # Entrypoint på port 80
+    ports:
+      - "80:80"
+      - "8080:8080"                  # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - proxy
+
+  frontend1:
+    build: ./frontend  
+    image: frontend:latest 
+    container_name: frontend1
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.frontend.entrypoints=web
+      - traefik.http.routers.frontend.rule=Host(`frontend.localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=5000
+    volumes:
+      - ./frontend:/code
+   
+    networks:
+      - proxy
+
+
+  frontend2:
+    build: ./frontend  
+    image: frontend:latest 
+    container_name: frontend2
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.frontend.entrypoints=web
+      - traefik.http.routers.frontend.rule=Host(`frontend.localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=5000
+    volumes:
+      - ./frontend:/code
+   
+    networks:
+      - proxy
+     
+  frontend3:
+    build: ./frontend  
+    image: frontend:latest 
+    container_name: frontend3
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.frontend.entrypoints=web
+      - traefik.http.routers.frontend.rule=Host(`frontend.localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=5000
+    volumes:
+      - ./frontend:/code
+   
+    networks:
+      - proxy
+     
+  backend:
+    build: ./backend 
+    image: backend:latest 
+    container_name: backend-api
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.backend.entrypoints=web
+      - traefik.http.routers.backend.rule=Host(`backend.localhost`)
+      - traefik.http.services.backend.loadbalancer.server.port=5001
+    volumes:
+      - ./backend:/code
+   
+    networks:
+      - proxy
+      - backend
+     
+  
+     
+  
+
+  #Db redis container
+  redis:
+    image: redislabs/redismod #konto på redis
+  
+    #ports:
+    #  - '6379:6379'
+    networks:
+     - backend #existerar i egen nätverk
+  
