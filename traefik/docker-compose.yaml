@@ -96,6 +96,7 @@ services:
   #Db redis container
   redis:
     image: redislabs/redismod #konto på redis
+    container_name: redis-db
   
     #ports:
     #  - '6379:6379'
