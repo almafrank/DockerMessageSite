@@ -86,6 +86,8 @@ services:
       - ./backend:/code
     depends_on:
     - redis
+    ports: # har angivit post för backend då det inte går att spara i C:\Windows\System32\drivers\etc\hosts med administratörsrättigheter.
+    - "5001:5001"
    
     networks:
       - proxy
