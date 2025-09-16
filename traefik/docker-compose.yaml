@@ -39,6 +39,8 @@ services:
       - traefik.http.services.frontend.loadbalancer.server.port=5000
     volumes:
       - ./frontend:/code
+    depends_on:
+    - backend
    
     networks:
       - proxy
@@ -56,6 +58,9 @@ services:
       - traefik.http.services.frontend.loadbalancer.server.port=5000
     volumes:
       - ./frontend:/code
+    
+    depends_on: #Ordning av container aktivering:frontend är beroende av att backend är aktiverad för att den ska aktiveras..
+    - backend
    
     networks:
       - proxy
@@ -72,6 +77,9 @@ services:
       - traefik.http.services.frontend.loadbalancer.server.port=5000
     volumes:
       - ./frontend:/code
+    
+    depends_on:
+    - backend
    
     networks:
       - proxy
@@ -88,7 +96,7 @@ services:
       - traefik.http.services.backend.loadbalancer.server.port=5001
     volumes:
       - ./backend:/code
-    depends_on:
+    depends_on: #Ordning av container aktivering:backend är beroende av att redis är aktiverad för att den ska aktiveras..
     - redis
     ports: # har angivit post för backend då det inte går att spara i C:\Windows\System32\drivers\etc\hosts med administratörsrättigheter.
     - "5001:5001"
