@@ -16,14 +16,14 @@ services:
       - --providers.docker=true    # Läs labels från Docker
       - --entrypoints.web.address=:80 # Entrypoint på port 80
       - --log.level=INFO # Styr Traefik logg: Debug, Warn, Error
-      - --accesslog=true # Aktivera logg
-      - --accesslog.filepath=/logs/access.log # Spara logg i fil
+      - --accesslog=true # Aktivera logg....
+      # ingen filepath då när man anropar request från backend kommer det att aktivera en ny commit med ny loggstatus
     ports:
       - "80:80"
      # - "8080:8080"                  # Dashboard-kommenterat ut när det finns labels
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./logs:/logs
+     
     labels: #har lagt label här för traefik så att man kan nå det på "dashboard.localhost"
       - traefik.enable=true
       - traefik.docker.network=proxy
