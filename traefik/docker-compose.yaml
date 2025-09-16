@@ -15,11 +15,15 @@ services:
       - --api.insecure=true        # Aktivera Traefiks dashboard (ej för produktion)
       - --providers.docker=true    # Läs labels från Docker
       - --entrypoints.web.address=:80 # Entrypoint på port 80
+      - --log.level=INFO # Styr Traefik logg: Debug, Warn, Error
+      - --accesslog=true # Aktivera logg
+      - --accesslog.filepath=/logs/access.log # Spara logg i fil
     ports:
       - "80:80"
       - "8080:8080"                  # Dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/logs
     networks:
       - proxy
 
