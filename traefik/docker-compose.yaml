@@ -98,7 +98,7 @@ services:
       - traefik.enable=true
       - traefik.docker.network=proxy-frontend
       - traefik.http.routers.backend.entrypoints=web
-      - traefik.http.routers.backend.rule=Host(`backend.localhost`)
+      - traefik.http.routers.backend.rule=Host(`backend.localhost`) && PathPrefix(`/messages`)
       - traefik.http.services.backend.loadbalancer.server.port=5001
     volumes:
       - ./backend:/code
