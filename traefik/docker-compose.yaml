@@ -110,13 +110,12 @@ services:
       - proxy-frontend
       - backend
      
-  #Db redis container
+  
   redis:
-    image: redislabs/redismod #konto på redis
+    image: redislabs/redismod 
     container_name: redis-db
   
-    #ports:
-    #  - '6379:6379'
+    
     networks:
-     - backend #existerar i egen nätverk
+     - backend 
   
