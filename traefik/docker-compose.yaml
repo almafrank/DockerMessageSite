@@ -15,16 +15,15 @@ services:
       - --api.insecure=true        # Aktivera Traefiks dashboard (ej för produktion)
       - --providers.docker=true    # Läs labels från Docker
       - --entrypoints.web.address=:80 # Entrypoint på port 80
-      - --log.level=INFO # Styr Traefik logg: Debug, Warn, Error
-      - --accesslog=true # Aktivera logg....
-      # ingen filepath då när man anropar request från backend kommer det att aktivera en ny commit med ny loggstatus
+      - --accesslog=true # Aktivera logg
+     
     ports:
       - "80:80"
-     # - "8080:8080"                  # Dashboard-kommenterat ut när det finns labels
+     # - "8080:8080"                  # Dashboard-kommenterat ut när det finns hostname
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
      
-    labels: #har lagt label här för traefik så att man kan nå det på "dashboard.localhost"
+    labels: # Har lagt label här för traefik container så att man kan nå det på "dashboard.localhost"
       - traefik.enable=true
       - traefik.docker.network=proxy-frontend
       - traefik.http.routers.traefik.entrypoints=web
@@ -45,7 +44,7 @@ services:
       - traefik.http.services.frontend.loadbalancer.server.port=5000
     volumes:
       - ./frontend:/code
-    depends_on:
+    depends_on: # Ordning av container aktivering:frontend är beroende av att backend är aktiverad för att den ska aktiveras..
     - backend
    
     networks:
@@ -65,7 +64,7 @@ services:
     volumes:
       - ./frontend:/code
     
-    depends_on: #Ordning av container aktivering:frontend är beroende av att backend är aktiverad för att den ska aktiveras..
+    depends_on: 
     - backend
    
     networks:
@@ -102,7 +101,7 @@ services:
       - traefik.http.services.backend.loadbalancer.server.port=5001
     volumes:
       - ./backend:/code
-    depends_on: #Ordning av container aktivering:backend är beroende av att redis är aktiverad för att den ska aktiveras..
+    depends_on: 
     - redis
     #ports: # Man kan ha port för backend om det inte går att spara i C:\Windows\System32\drivers\etc\hosts. Har lagt till PathPrefix till API request /messages..
     #- "5001:5001"
