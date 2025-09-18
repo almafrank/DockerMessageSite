@@ -1,11 +1,11 @@
 FROM python:3.10-alpine
 
-WORKDIR /code
+WORKDIR /app  #Man kan skriva /code också så kopierar man allt i mappen
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .   
+COPY . /app  #Man kan lägga till COPY . .
 
 EXPOSE 5001
 
