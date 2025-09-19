@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
 
-WORKDIR /app
+WORKDIR /app    # Man kan om man vill använda /code istället
 
 COPY requirements.txt /app
 RUN --mount=type=cache,target=/root/ .cache/pip \ 
