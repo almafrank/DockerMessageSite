@@ -1,12 +1,15 @@
-FROM python:3.10-alpine
+FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt /app
+RUN --mount=type=cache,target=/root/ .cache/pip \ 
+    pip3 install -r requirements.txt
 
 COPY . /app  
 
 EXPOSE 5000
 
-CMD ["python3","app.py"]
+ENTRYPOINT ["python3"]
+
+CMD ["app.py"]
